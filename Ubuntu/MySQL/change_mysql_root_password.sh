@@ -28,6 +28,13 @@ sql_escape_string() {
     printf '%s' "$value"
 }
 
+option_file_escape() {
+    local value=$1
+    value=${value//\\/\\\\}
+    value=${value//\"/\\\"}
+    printf '%s' "$value"
+}
+
 if ! command -v mysql >/dev/null 2>&1; then
     printf 'MySQL is not installed. Run install_mysql.sh first.\n' >&2
     exit 1
@@ -49,9 +56,11 @@ if ! sudo mysql --batch --skip-column-names --execute='SELECT 1;' >/dev/null 2>&
 
     MYSQL_CONFIG=$(mktemp)
     chmod 600 "$MYSQL_CONFIG"
-    printf '[client]\nuser=root\npassword=%s\nhost=localhost\nprotocol=socket\n' \
-        "$current_password" >"$MYSQL_CONFIG"
+    escaped_current_password=$(option_file_escape "$current_password")
+    printf '[client]\nuser=root\npassword="%s"\nhost=localhost\nprotocol=socket\n' \
+        "$escaped_current_password" >"$MYSQL_CONFIG"
     unset current_password
+    unset escaped_current_password
 
     MYSQL_COMMAND=(mysql "--defaults-extra-file=$MYSQL_CONFIG")
 
@@ -88,9 +97,11 @@ escaped_password=$(sql_escape_string "$new_password")
 cleanup
 MYSQL_CONFIG=$(mktemp)
 chmod 600 "$MYSQL_CONFIG"
-printf '[client]\nuser=root\npassword=%s\nhost=localhost\nprotocol=socket\n' \
-    "$new_password" >"$MYSQL_CONFIG"
+escaped_option_password=$(option_file_escape "$new_password")
+printf '[client]\nuser=root\npassword="%s"\nhost=localhost\nprotocol=socket\n' \
+    "$escaped_option_password" >"$MYSQL_CONFIG"
 unset new_password confirmed_password escaped_password
+unset escaped_option_password
 
 if ! mysql --defaults-extra-file="$MYSQL_CONFIG" --batch --skip-column-names \
     --execute="SELECT CONCAT('Authenticated as: ', CURRENT_USER());"; then
