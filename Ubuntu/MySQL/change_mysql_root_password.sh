@@ -50,22 +50,39 @@ printf 'MySQL root password configuration\n\n'
 # A new Ubuntu MySQL installation normally permits administrative access through
 # `sudo mysql`. If that is no longer available, authenticate with the current
 # MySQL root password through a protected temporary option file.
-if ! sudo mysql --batch --skip-column-names --execute='SELECT 1;' >/dev/null 2>&1; then
-    read -r -s -p 'Current MySQL root password: ' current_password
-    printf '\n'
+printf 'Checking the current MySQL root authentication method...\n'
 
-    MYSQL_CONFIG=$(mktemp)
-    chmod 600 "$MYSQL_CONFIG"
-    escaped_current_password=$(option_file_escape "$current_password")
-    printf '[client]\nuser=root\npassword="%s"\nhost=localhost\nprotocol=socket\n' \
-        "$escaped_current_password" >"$MYSQL_CONFIG"
-    unset current_password
-    unset escaped_current_password
+if sudo mysql --batch --skip-column-names --execute='SELECT 1;' >/dev/null 2>&1; then
+    printf 'Current root access verified through Ubuntu sudo/socket authentication.\n'
+else
+    printf 'MySQL root uses password authentication.\n'
 
-    MYSQL_COMMAND=(mysql "--defaults-extra-file=$MYSQL_CONFIG")
+    authenticated=false
+    for attempt in 1 2 3; do
+        read -r -s -p "Current MySQL root password (attempt ${attempt}/3): " current_password
+        printf '\n'
 
-    if ! "${MYSQL_COMMAND[@]}" --batch --execute='SELECT 1;' >/dev/null 2>&1; then
-        printf 'Authentication failed. The current root password is incorrect.\n' >&2
+        cleanup
+        MYSQL_CONFIG=$(mktemp)
+        chmod 600 "$MYSQL_CONFIG"
+        escaped_current_password=$(option_file_escape "$current_password")
+        printf '[client]\nuser=root\npassword="%s"\nhost=localhost\nprotocol=socket\n' \
+            "$escaped_current_password" >"$MYSQL_CONFIG"
+        unset current_password escaped_current_password
+
+        MYSQL_COMMAND=(mysql "--defaults-extra-file=$MYSQL_CONFIG")
+
+        if "${MYSQL_COMMAND[@]}" --batch --execute='SELECT 1;' >/dev/null 2>&1; then
+            authenticated=true
+            printf 'Current MySQL root password verified successfully.\n'
+            break
+        fi
+
+        printf 'Authentication failed: the current root password was not accepted.\n' >&2
+    done
+
+    if [[ "$authenticated" != true ]]; then
+        printf 'Current-password verification failed after three attempts. No password was changed.\n' >&2
         exit 1
     fi
 fi
