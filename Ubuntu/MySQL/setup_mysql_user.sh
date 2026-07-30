@@ -4,10 +4,15 @@ set -Eeuo pipefail
 
 readonly SCRIPT_NAME="${0##*/}"
 MYSQL_CLIENT_CONFIG=""
+MYSQL_ADMIN_CONFIG=""
+MYSQL_ADMIN=()
 
 cleanup() {
     if [[ -n "${MYSQL_CLIENT_CONFIG}" && -f "${MYSQL_CLIENT_CONFIG}" ]]; then
         rm -f -- "${MYSQL_CLIENT_CONFIG}"
+    fi
+    if [[ -n "${MYSQL_ADMIN_CONFIG}" && -f "${MYSQL_ADMIN_CONFIG}" ]]; then
+        rm -f -- "${MYSQL_ADMIN_CONFIG}"
     fi
 }
 
@@ -88,6 +93,13 @@ sql_escape_string() {
     printf '%s' "$value"
 }
 
+option_file_escape() {
+    local value=$1
+    value=${value//\\/\\\\}
+    value=${value//\"/\\\"}
+    printf '%s' "$value"
+}
+
 if [[ "${EUID}" -eq 0 ]]; then
     printf 'Run this script as a normal Ubuntu user with sudo access, not directly as root.\n' >&2
     exit 1
@@ -128,10 +140,32 @@ if ! sudo systemctl is-active --quiet mysql; then
     exit 1
 fi
 
+log 'Authenticating as the MySQL root user'
+read -r -s -p 'MySQL root password: ' MYSQL_ROOT_PASSWORD
+printf '\n'
+
+MYSQL_ADMIN_CONFIG=$(mktemp)
+chmod 600 "$MYSQL_ADMIN_CONFIG"
+ESCAPED_ROOT_OPTION_PASSWORD=$(option_file_escape "$MYSQL_ROOT_PASSWORD")
+printf '[client]\nuser=root\npassword="%s"\nhost=localhost\nprotocol=socket\n' \
+    "$ESCAPED_ROOT_OPTION_PASSWORD" >"$MYSQL_ADMIN_CONFIG"
+unset MYSQL_ROOT_PASSWORD ESCAPED_ROOT_OPTION_PASSWORD
+
+# Run every administrative query explicitly as MySQL root. The protected option
+# file supplies the password without exposing it in the process list or history.
+MYSQL_ADMIN=(sudo mysql "--defaults-extra-file=$MYSQL_ADMIN_CONFIG" -u root)
+
+if ! "${MYSQL_ADMIN[@]}" --batch --execute='SELECT 1;' >/dev/null 2>&1; then
+    printf 'Error: MySQL root authentication failed. No database or user was created.\n' >&2
+    exit 1
+fi
+
+printf 'MySQL root authentication verified successfully.\n'
+
 ESCAPED_PASSWORD=$(sql_escape_string "$MYSQL_USER_PASSWORD")
 
 log 'Creating the database, user, permissions, and test table'
-sudo mysql <<SQL
+"${MYSQL_ADMIN[@]}" <<SQL
 CREATE DATABASE IF NOT EXISTS \`${DATABASE_NAME}\`;
 CREATE USER IF NOT EXISTS '${MYSQL_USERNAME}'@'localhost' IDENTIFIED BY '${ESCAPED_PASSWORD}';
 ALTER USER '${MYSQL_USERNAME}'@'localhost' IDENTIFIED BY '${ESCAPED_PASSWORD}';
@@ -150,20 +184,22 @@ SQL
 log 'Creating a protected temporary client configuration for verification'
 MYSQL_CLIENT_CONFIG=$(mktemp)
 chmod 600 "$MYSQL_CLIENT_CONFIG"
+ESCAPED_USER_OPTION_PASSWORD=$(option_file_escape "$MYSQL_USER_PASSWORD")
 cat >"$MYSQL_CLIENT_CONFIG" <<EOF
 [client]
 user=${MYSQL_USERNAME}
-password=${MYSQL_USER_PASSWORD}
+password="${ESCAPED_USER_OPTION_PASSWORD}"
 host=localhost
 protocol=socket
 EOF
+unset ESCAPED_USER_OPTION_PASSWORD
 
 log 'Verifying login, database access, permissions, and test data'
 mysql --defaults-extra-file="$MYSQL_CLIENT_CONFIG" --database="$DATABASE_NAME" \
     --batch --skip-column-names \
     --execute="SELECT CONCAT('MySQL version: ', VERSION()); SELECT CONCAT('Database: ', DATABASE()); SELECT CONCAT('Test row: ', id, ', ', name) FROM table1 WHERE id = 1;"
 
-GRANTS=$(sudo mysql --batch --skip-column-names \
+GRANTS=$("${MYSQL_ADMIN[@]}" --batch --skip-column-names \
     --execute="SHOW GRANTS FOR '${MYSQL_USERNAME}'@'localhost';")
 
 if [[ "$GRANTS" != *"${DATABASE_NAME}"* ]]; then
