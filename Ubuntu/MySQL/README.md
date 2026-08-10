@@ -226,6 +226,23 @@ sudo systemctl restart mysql
 sudo systemctl status mysql
 ```
 
+## Download the MySQL shell scripts
+
+```bash
+curl --fail --location --remote-name \
+  "https://raw.githubusercontent.com/DeepPatel25/Knowledge-Base/main/Ubuntu/MySQL/install_mysql.sh"
+
+curl --fail --location --remote-name \
+  "https://raw.githubusercontent.com/DeepPatel25/Knowledge-Base/main/Ubuntu/MySQL/change_mysql_root_password.sh"
+
+curl --fail --location --remote-name \
+  "https://raw.githubusercontent.com/DeepPatel25/Knowledge-Base/main/Ubuntu/MySQL/setup_mysql_user.sh"
+```
+
+```bash
+chmod +x install_mysql.sh change_mysql_root_password.sh setup_mysql_user.sh
+```
+
 ## License
 
 This documentation is available for learning and personal use.
