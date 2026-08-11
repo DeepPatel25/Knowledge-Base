@@ -6,7 +6,7 @@ This section contains practical AWS learning notes, examples, and security guida
 
 - [x] [Identity and Access Management (IAM)](./IAM/README.md)
 - [ ] AWS global infrastructure: Regions, Availability Zones, and edge locations
-- [ ] EC2: instances, AMIs, key pairs, security groups, and storage
+- [x] [Elastic Compute Cloud (EC2)](./EC2/README.md): instances, AMIs, key pairs, security groups, storage, and pricing
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
 - [ ] S3: buckets, objects, permissions, versioning, and lifecycle rules
 - [ ] Databases: RDS, Aurora, and DynamoDB fundamentals
