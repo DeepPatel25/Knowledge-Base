@@ -11,6 +11,7 @@ After completing this topic, you should be able to:
 - Launch an instance in a VPC and connect to it securely.
 - Configure security-group rules for SSH, HTTP, and HTTPS.
 - Use user data to bootstrap a web server.
+- Explain how Elastic Load Balancing and Auto Scaling Groups provide scalable, highly available applications.
 - Compare On-Demand, Spot, Reserved Instances, and Savings Plans.
 - Stop, start, reboot, and terminate an instance safely.
 
@@ -277,4 +278,5 @@ Discounts and terms change, so check the current AWS pricing pages and use the A
 ## Continue learning
 
 - Study [Amazon Machine Images (AMI)](./AMI/README.md) in depth, including custom images and EC2 Image Builder.
+- Learn how to combine [Elastic Load Balancing and Auto Scaling Groups](./Load%20Balancer/README.md) for scalable, highly available EC2 applications.
 - Return to the [AWS learning path](../README.md) and continue with VPC networking, load balancing, Auto Scaling, and monitoring.
