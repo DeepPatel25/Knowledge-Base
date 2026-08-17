@@ -15,6 +15,7 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
     - [Elastic Load Balancing and Auto Scaling Groups](./AWS/EC2/Load%20Balancer/README.md) — scalable and highly available EC2 architectures, load balancer types, target groups, health checks, and scaling policies.
   - [AWS Storage](./AWS/Storage/README.md) — storage guides covering selection, configuration, backup, security, and operations.
     - [Amazon Elastic Block Store (EBS)](./AWS/Storage/EBS/README.md) — persistent EC2 block storage, volume management, snapshots, encryption, and lifecycle automation.
+    - [Amazon Simple Storage Service (S3)](./AWS/Storage/S3/README.md) — object storage, permissions, versioning, replication, storage classes, lifecycle automation, encryption, and monitoring.
 
 ### Amazon Linux 2023
 
@@ -44,7 +45,8 @@ Knowledge-Base/
 │   │   └── Load Balancer/
 │   ├── IAM/
 │   └── Storage/
-│       └── EBS/
+│       ├── EBS/
+│       └── S3/
 ├── Amazon Linux 2023/
 │   └── MySQL/
 ├── Docker/

@@ -11,8 +11,8 @@ This section contains practical AWS learning notes, examples, and security guida
   - [x] [Elastic Load Balancing and Auto Scaling Groups](./EC2/Load%20Balancer/README.md): scalability, high availability, load balancer types, target groups, scaling policies, and hands-on setup
 - [x] [Storage](./Storage/README.md): storage fundamentals and service-specific guides
   - [x] [Amazon Elastic Block Store (EBS)](./Storage/EBS/README.md): volumes, attachment, mounting, resizing, snapshots, encryption, and lifecycle management
+  - [x] [Amazon Simple Storage Service (S3)](./Storage/S3/README.md): buckets, objects, permissions, versioning, replication, storage classes, lifecycle rules, encryption, and monitoring
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
-- [ ] S3: buckets, objects, permissions, versioning, and lifecycle rules
 - [ ] Databases: RDS, Aurora, and DynamoDB fundamentals
 - [ ] Monitoring and auditing: CloudWatch and CloudTrail
 - [ ] Infrastructure as code: CloudFormation or Terraform
