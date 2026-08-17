@@ -7,6 +7,8 @@ This section contains practical AWS learning notes, examples, and security guida
 - [x] [Identity and Access Management (IAM)](./IAM/README.md)
 - [ ] AWS global infrastructure: Regions, Availability Zones, and edge locations
 - [x] [Elastic Compute Cloud (EC2)](./EC2/README.md): instances, AMIs, key pairs, security groups, storage, and pricing
+- [x] [Storage](./Storage/README.md): storage fundamentals and service-specific guides
+  - [x] [Amazon Elastic Block Store (EBS)](./Storage/EBS/README.md): volumes, attachment, mounting, resizing, snapshots, encryption, and lifecycle management
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
 - [ ] S3: buckets, objects, permissions, versioning, and lifecycle rules
 - [ ] Databases: RDS, Aurora, and DynamoDB fundamentals
@@ -20,8 +22,9 @@ This section contains practical AWS learning notes, examples, and security guida
 1. Learn IAM and secure the AWS account.
 2. Understand Regions, Availability Zones, and the shared responsibility model.
 3. Build a small EC2 and VPC lab.
-4. Add S3, a managed database, monitoring, and cost controls.
-5. Rebuild the lab with infrastructure as code.
+4. Attach and manage an EBS volume, then practice snapshot recovery.
+5. Add S3, a managed database, monitoring, and cost controls.
+6. Rebuild the lab with infrastructure as code.
 
 ## Study rule
 
