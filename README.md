@@ -1,6 +1,6 @@
 # Knowledge Base
 
-A practical collection of learning notes, operational guides, and reusable scripts for cloud infrastructure, Linux administration, databases, source-control access, and macOS maintenance.
+A practical collection of learning notes, operational guides, and reusable scripts for cloud infrastructure, containers, Linux administration, databases, source-control access, and macOS maintenance.
 
 The guides favor secure defaults, reproducible commands, verification steps, troubleshooting advice, and explicit cleanup instructions.
 
@@ -17,6 +17,10 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
 ### Amazon Linux 2023
 
 - [Install and configure MySQL on Amazon EC2](./Amazon%20Linux%202023/MySQL/README.md) — MySQL Community Server installation, database setup, user management, verification, and cleanup on Amazon Linux 2023.
+
+### Docker
+
+- [Docker command guide](./Docker/README.md) — images, containers, troubleshooting, Docker Hub, persistent storage, networking, security, and cleanup.
 
 ### Ubuntu
 
@@ -39,6 +43,7 @@ Knowledge-Base/
 │       └── EBS/
 ├── Amazon Linux 2023/
 │   └── MySQL/
+├── Docker/
 ├── Ubuntu/
 │   ├── GitHub-Deploy-Key/
 │   ├── MySQL/
@@ -60,12 +65,12 @@ Each topic lives in a focused directory with a `README.md`. Supporting scripts a
 
 ## Available helper scripts
 
-| Script | Purpose |
-| --- | --- |
-| [`Ubuntu/MySQL/install_mysql.sh`](./Ubuntu/MySQL/install_mysql.sh) | Install MySQL Server on Ubuntu. |
-| [`Ubuntu/MySQL/change_mysql_root_password.sh`](./Ubuntu/MySQL/change_mysql_root_password.sh) | Change the local MySQL root password interactively. |
-| [`Ubuntu/MySQL/setup_mysql_user.sh`](./Ubuntu/MySQL/setup_mysql_user.sh) | Create or configure a MySQL database user. |
-| [`Ubuntu/GitHub-Deploy-Key/setup-github-deploy-key.sh`](./Ubuntu/GitHub-Deploy-Key/setup-github-deploy-key.sh) | Configure a repository deploy key interactively. |
+| Script                                                                                                         | Purpose                                             |
+| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| [`Ubuntu/MySQL/install_mysql.sh`](./Ubuntu/MySQL/install_mysql.sh)                                             | Install MySQL Server on Ubuntu.                     |
+| [`Ubuntu/MySQL/change_mysql_root_password.sh`](./Ubuntu/MySQL/change_mysql_root_password.sh)                   | Change the local MySQL root password interactively. |
+| [`Ubuntu/MySQL/setup_mysql_user.sh`](./Ubuntu/MySQL/setup_mysql_user.sh)                                       | Create or configure a MySQL database user.          |
+| [`Ubuntu/GitHub-Deploy-Key/setup-github-deploy-key.sh`](./Ubuntu/GitHub-Deploy-Key/setup-github-deploy-key.sh) | Configure a repository deploy key interactively.    |
 
 Inspect every script before running it. Execute scripts only on systems you are authorized to administer.
 
