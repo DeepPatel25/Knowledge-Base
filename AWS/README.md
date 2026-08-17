@@ -7,6 +7,7 @@ This section contains practical AWS learning notes, examples, and security guida
 - [x] [Identity and Access Management (IAM)](./IAM/README.md)
 - [ ] AWS global infrastructure: Regions, Availability Zones, and edge locations
 - [x] [Elastic Compute Cloud (EC2)](./EC2/README.md): instances, AMIs, key pairs, security groups, storage, and pricing
+  - [x] [Amazon Machine Images (AMI)](./EC2/AMI/README.md): image creation, EBS snapshots, launch templates, golden images, Image Builder, security, and cleanup
 - [x] [Storage](./Storage/README.md): storage fundamentals and service-specific guides
   - [x] [Amazon Elastic Block Store (EBS)](./Storage/EBS/README.md): volumes, attachment, mounting, resizing, snapshots, encryption, and lifecycle management
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs

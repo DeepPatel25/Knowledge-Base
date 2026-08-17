@@ -40,6 +40,8 @@ AMI sources include:
 - Community AMIs, which require careful trust and security review.
 - Private AMIs created from your configured instances.
 
+See the [Amazon Machine Images (AMI) guide](./AMI/README.md) for image contents, custom AMI creation, EBS snapshot relationships, launch templates, golden images, EC2 Image Builder, security, and cleanup.
+
 ### Instance type
 
 An instance type determines the hardware capacity available to the virtual machine. Its name combines a family, generation, options, and size. For example, in `t3.micro`, `t` is the burstable general-purpose family, `3` is the generation, and `micro` is the size.
@@ -274,4 +276,5 @@ Discounts and terms change, so check the current AWS pricing pages and use the A
 
 ## Continue learning
 
-Return to the [AWS learning path](../README.md) and continue with VPC networking, load balancing, Auto Scaling, and monitoring.
+- Study [Amazon Machine Images (AMI)](./AMI/README.md) in depth, including custom images and EC2 Image Builder.
+- Return to the [AWS learning path](../README.md) and continue with VPC networking, load balancing, Auto Scaling, and monitoring.

@@ -11,6 +11,7 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
 - [AWS learning path](./AWS/README.md) — an ordered roadmap for learning core AWS services and operational practices.
   - [Identity and Access Management (IAM)](./AWS/IAM/README.md) — identities, roles, policies, MFA, credentials, and least privilege.
   - [Elastic Compute Cloud (EC2)](./AWS/EC2/README.md) — instances, AMIs, instance types, EBS, networking, security groups, access methods, pricing, and an Apache lab.
+    - [Amazon Machine Images (AMI)](./AWS/EC2/AMI/README.md) — reusable EC2 images, custom image creation, EBS snapshots, launch templates, golden images, and EC2 Image Builder.
   - [AWS Storage](./AWS/Storage/README.md) — storage guides covering selection, configuration, backup, security, and operations.
     - [Amazon Elastic Block Store (EBS)](./AWS/Storage/EBS/README.md) — persistent EC2 block storage, volume management, snapshots, encryption, and lifecycle automation.
 
@@ -38,6 +39,7 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
 Knowledge-Base/
 ├── AWS/
 │   ├── EC2/
+│   │   └── AMI/
 │   ├── IAM/
 │   └── Storage/
 │       └── EBS/
