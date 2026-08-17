@@ -27,6 +27,7 @@
 - [Troubleshooting](#troubleshooting)
 - [Cleanup](#cleanup)
 - [Quick Revision](#quick-revision)
+- [Learning Checklist](#learning-checklist)
 - [Knowledge Check](#knowledge-check)
 - [References](#references)
 
