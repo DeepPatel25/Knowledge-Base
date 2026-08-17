@@ -7,9 +7,9 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Learning Objectives](#learning-objectives)
 - [Prerequisites](#prerequisites)
+- [Overview](#overview)
 - [Scalability](#scalability)
 - [Vertical vs Horizontal Scaling](#vertical-vs-horizontal-scaling)
 - [High Availability](#high-availability)
@@ -28,6 +28,7 @@
 - [Security and Cost Guidance](#security-and-cost-guidance)
 - [Cleanup](#cleanup)
 - [Quick Revision](#quick-revision)
+- [Key Takeaway](#key-takeaway)
 - [Knowledge Check](#knowledge-check)
 - [References](#references)
 
@@ -148,19 +149,10 @@ In AWS, multiple EC2 instances can be placed behind a load balancer.
 
 ### Comparison
 
----
-
-Scaling Type Meaning Example
-
----
-
-Vertical Increase resources of Move from `t2.micro` to
-an existing server `m5.large`
-
-Horizontal Add more server Add more EC2 instances
-instances behind a load balancer
-
----
+| Scaling type | Meaning | Example |
+| --- | --- | --- |
+| Vertical | Increase the resources of one server | Move from `t3.micro` to `m7i.large` |
+| Horizontal | Add more servers | Add EC2 instances behind a load balancer |
 
 ---
 
@@ -223,9 +215,9 @@ Elasticity
 
 ---
 
-# Elastic Load Balancing
+## Elastic Load Balancing
 
-## What is a Load Balancer?
+### What is a Load Balancer?
 
 A load balancer sits between users and backend servers and distributes
 incoming requests across multiple servers.
@@ -245,14 +237,14 @@ request.
 
 ---
 
-## Why Use a Load Balancer?
+### Why Use a Load Balancer?
 
-### 1. Distributes Traffic
+#### 1. Distributes Traffic
 
 Incoming traffic is distributed across multiple servers so that a single
 server does not receive all the workload.
 
-### 2. Improves Availability
+#### 2. Improves Availability
 
 If one server becomes unavailable, traffic can be sent to the remaining
 working servers.
@@ -267,27 +259,27 @@ working servers.
              +---- Traffic --+
 ```
 
-### 3. Supports Scaling
+#### 3. Supports Scaling
 
 When additional servers are available during periods of high demand, the
 load balancer can distribute traffic across them.
 
-### 4. Provides a Single Access Point
+#### 4. Provides a Single Access Point
 
 Clients can access the application through the load balancer instead of
 needing to know the addresses of individual backend servers.
 
-### 5. Supports High Availability Across AZs
+#### 5. Supports High Availability Across AZs
 
 Backend resources can be distributed across multiple Availability Zones.
 
 ---
 
-# AWS Load Balancer Types
+## AWS Load Balancer Types
 
 AWS provides different load balancer types for different workloads.
 
-## Application Load Balancer (ALB)
+### Application Load Balancer (ALB)
 
 **Application Load Balancer** is designed for web applications and
 handles:
@@ -316,7 +308,7 @@ HTTP/HTTPS traffic
 
 ---
 
-## Network Load Balancer (NLB)
+### Network Load Balancer (NLB)
 
 **Network Load Balancer** is designed for high-performance, low-latency
 workloads.
@@ -325,6 +317,7 @@ It can handle traffic such as:
 
 - TCP
 - UDP
+- TLS
 
 It operates at **Layer 4 --- Transport Layer**.
 
@@ -344,7 +337,7 @@ TCP / UDP
 
 ---
 
-## Gateway Load Balancer (GWLB)
+### Gateway Load Balancer (GWLB)
 
 **Gateway Load Balancer** is used to deploy, scale, and manage
 third-party virtual network appliances.
@@ -367,31 +360,21 @@ Virtual Appliance
 
 ---
 
-## Load Balancer Comparison
+### Load Balancer Comparison
+
+| Type | Layer or traffic | Primary use |
+| --- | --- | --- |
+| **ALB** | Layer 7: HTTP and HTTPS | Web applications, APIs, and content-based routing |
+| **NLB** | Layer 4: TCP, UDP, and TLS | High-performance, low-latency connections and static IP requirements |
+| **GWLB** | Layer 3 gateway with GENEVE | Inserting and scaling virtual network appliances |
 
 ---
 
-Type Layer / Traffic Main Purpose
-
----
-
-**ALB** Layer 7 --- HTTP/HTTPS Web applications
-
-**NLB** Layer 4 --- TCP/UDP High-performance and
-low-latency workloads
-
-**GWLB** Virtual appliance Firewalls and
-traffic monitoring appliances
-
----
-
----
-
-# Practical: Creating an Application Load Balancer
+## Practical: Creating an Application Load Balancer
 
 The learning material describes the following practical workflow.
 
-## Step 1 --- Set Up EC2 Instances
+### Step 1 --- Set Up EC2 Instances
 
 Create two or more EC2 instances.
 
@@ -403,79 +386,88 @@ EC2-A ---> Apache
 EC2-B ---> Apache
 ```
 
-## Step 2 --- Configure Security Groups
+### Step 2 --- Configure Security Groups
 
-Configure a security group that allows the required access, including:
+Use separate security groups for the load balancer and targets:
 
-- HTTP
-- SSH
+- **ALB security group:** allow inbound HTTP `80` from `0.0.0.0/0` and
+  `::/0` for this public lab. Use HTTPS `443` and a certificate for real
+  applications.
+- **EC2 security group:** allow inbound HTTP `80` only from the ALB security
+  group. Do not expose the instances directly to the internet.
+- For administration, prefer Systems Manager Session Manager. If SSH is
+  required, restrict port `22` to your current public IP address.
 
-## Step 3 --- Create the Load Balancer
+### Step 3 --- Create the Target Group
+
+1. Create an instance target group using HTTP port `80`.
+2. Set the health-check path to `/`.
+3. Register both instances.
+4. Wait for both targets to become healthy before testing traffic.
+
+### Step 4 --- Create the Load Balancer
 
 From the EC2 dashboard:
 
 1.  Create an **Application Load Balancer**.
 2.  Configure it as **internet-facing**.
+3.  Select the VPC and at least two public subnets in different Availability
+    Zones.
+4.  Attach the ALB security group.
+5.  Create an HTTP listener on port `80` that forwards to the target group.
 
-## Step 4 --- Register Targets
-
-Add the EC2 instances to a **target group**.
-
-Configure health checks for the targets.
+### Step 5 --- Understand the Request Path
 
 ```text
-ALB
- |
- v
-Target Group
- |
- +--> EC2-A
- +--> EC2-B
+Client -> ALB listener -> Listener rule -> Target group -> Healthy EC2 target
 ```
 
-## Step 5 --- Test the Load Balancer
+The listener accepts connections on a configured protocol and port. Its rules
+evaluate each request and forward matching traffic to a target group. The load
+balancer sends traffic only to targets that pass health checks.
+
+### Step 6 --- Test the Load Balancer
 
 Open the load balancer's DNS name.
 
 Requests should be distributed among the registered EC2 instances.
 
-A useful way to observe this is to return the hostname of each EC2
-instance from its web page.
+A useful way to observe this is to return the hostname of each EC2 instance
+from its web page and make several separate requests. Browser connection reuse
+and routing behavior mean that refreshing is not guaranteed to alternate
+between targets.
 
 ---
 
-# EC2 Web Server User Data
+## EC2 Web Server User Data
 
 The source material uses the following Amazon Linux setup to install
 Apache and display the current instance hostname:
 
 ```bash
 #!/bin/bash
+set -euo pipefail
 
-sudo yum update -y
-
-# Install Apache web server
-sudo yum install -y httpd
-
-# Start Apache
-sudo systemctl start httpd
-
-# Enable Apache on boot
-sudo systemctl enable httpd
+dnf install -y httpd
+systemctl enable --now httpd
 
 # Create a page that displays the current server hostname
-echo "<html><h1>Welcome to Apache Web Server on Amazon Linux - $(hostname)!</h1></html>" \
+echo "<html><h1>Served by $(hostname)</h1></html>" \
   > /var/www/html/index.html
 ```
+
+This example targets Amazon Linux 2023. EC2 user data runs as `root`, so
+`sudo` is unnecessary. Review `/var/log/cloud-init-output.log` if the package
+installation or web-server startup fails.
 
 If multiple EC2 instances use this setup, refreshing the load balancer
 endpoint can help demonstrate which backend instance handled a request.
 
 ---
 
-# Auto Scaling Groups
+## Auto Scaling Groups
 
-## What is an ASG?
+### What is an ASG?
 
 An **AWS Auto Scaling Group (ASG)** automatically adds or removes EC2
 instances based on demand.
@@ -507,9 +499,9 @@ infrastructure costs.
 
 ---
 
-# ASG Functions
+## ASG Functions
 
-## 1. Automatic Scaling
+### 1. Automatic Scaling
 
 Increase or decrease the number of EC2 instances based on demand.
 
@@ -518,7 +510,7 @@ Demand ↑  ---> Instances ↑
 Demand ↓  ---> Instances ↓
 ```
 
-## 2. Maintain Instance Health
+### 2. Maintain Instance Health
 
 An ASG can replace unhealthy instances to maintain reliability.
 
@@ -532,12 +524,12 @@ ASG replaces instance
 New healthy EC2
 ```
 
-## 3. Scaling Policies
+### 3. Scaling Policies
 
 Scaling rules can be based on metrics such as:
 
 - CPU usage
-- Request count
+- Application Load Balancer request count per target
 
 Conceptually:
 
@@ -551,12 +543,22 @@ Scaling Policy
 Scale Out / Scale In
 ```
 
-## 4. Ensure Availability
+Common policy types include target tracking, step scaling, and simple scaling.
+Target tracking is often the easiest starting point: choose a metric and target
+value, and EC2 Auto Scaling adjusts capacity toward that target.
+
+### 4. Ensure Availability
 
 The group can maintain a defined number of EC2 instances so that
 application capacity remains available.
 
-## 5. Scheduled Scaling
+An ASG has three important capacity settings:
+
+- **Minimum capacity:** the lowest number of instances the group may retain.
+- **Desired capacity:** the number the group currently attempts to run.
+- **Maximum capacity:** the highest number scaling policies may request.
+
+### 5. Scheduled Scaling
 
 Scaling activities can be configured for known periods of increased or
 reduced traffic.
@@ -573,7 +575,7 @@ Scheduled Scaling
 Increase capacity
 ```
 
-## 6. Distribute Instances Across Availability Zones
+### 6. Distribute Instances Across Availability Zones
 
 Instances can be deployed across multiple Availability Zones to improve
 high availability.
@@ -586,19 +588,24 @@ ASG
  +--> AZ-B ---> EC2
 ```
 
-## 7. Integrate with ELB
+### 7. Integrate with ELB
 
-An Auto Scaling Group can work with an Elastic Load Balancer so that
+An Auto Scaling Group can work with Elastic Load Balancing so that
 traffic is distributed among its instances.
 
-## 8. Optimize Costs
+When the ASG is attached to a target group, new instances are registered and
+terminating instances are deregistered automatically. Enable Elastic Load
+Balancing health checks when target health should influence instance
+replacement; EC2 health checks alone do not evaluate the application endpoint.
+
+### 8. Optimize Costs
 
 During periods of low demand, unnecessary capacity can be removed to
 reduce infrastructure costs.
 
 ---
 
-# ELB + ASG Together
+## ELB + ASG Together
 
 ELB and ASG solve related but different problems.
 
@@ -660,12 +667,12 @@ Together they support:
 
 ---
 
-# Steps to Create an ASG
+## Steps to Create an ASG
 
 The source material outlines this sequence:
 
 ```text
-Launch Template / Configuration
+Launch Template
             |
             v
 Create Auto Scaling Group
@@ -689,44 +696,122 @@ Add Notifications (Optional)
 Review and Create
 ```
 
-## 1. Launch Template or Configuration
+### 1. Create a Launch Template
 
 Define the configuration that will be used when EC2 instances are
-launched.
+launched, including the AMI, instance type, security group, IAM instance
+profile, storage, and user data. Use a launch template for new deployments.
 
-## 2. Create Auto Scaling Group
+### 2. Create Auto Scaling Group
 
 Create the ASG that will manage the EC2 instances.
 
-## 3. Select VPC and Subnets
+### 3. Select VPC and Subnets
 
 Choose where the instances should be deployed.
 
-## 4. Attach Load Balancer --- Optional
+### 4. Attach Load Balancer --- Optional
 
 Connect the ASG with a load balancer when traffic should be distributed
 among the managed instances.
 
-## 5. Configure Scaling Policies
+For this lab, attach the existing target group and enable Elastic Load
+Balancing health checks. The ALB itself is connected through the target group,
+not selected as an individual backend server.
 
-Define the rules that determine when capacity should increase or
-decrease.
+### 5. Configure Capacity and Scaling Policies
 
-## 6. Configure Health Checks
+Set minimum, desired, and maximum capacity, then define the policy that
+determines when capacity should increase or decrease. Allow for instance warmup
+so a new instance can boot and begin serving traffic before its metrics affect
+another scaling decision.
+
+### 6. Configure Health Checks
 
 Configure health checks so unhealthy capacity can be identified.
 
-## 7. Add Notifications --- Optional
+### 7. Add Notifications --- Optional
 
 Configure notifications if required.
 
-## 8. Review and Create
+### 8. Review and Create
 
 Review the configuration and create the Auto Scaling Group.
 
 ---
 
-# Quick Revision
+## Verification and Troubleshooting
+
+Use the load balancer DNS name rather than an individual instance address:
+
+```bash
+for request in {1..10}; do
+  curl --silent "http://ALB_DNS_NAME/"
+  echo
+done
+```
+
+Confirm the following before generating load for a scaling test:
+
+- The ALB is active and its listener forwards to the expected target group.
+- Targets report `healthy` in every enabled Availability Zone.
+- The ASG has reached its desired capacity and instances show `InService`.
+- The web page returns through the ALB DNS name.
+- CloudWatch displays the metric used by the scaling policy.
+
+If targets remain unhealthy, check:
+
+- The EC2 security group permits the application port from the ALB security
+  group.
+- The target group uses the correct protocol, port, health-check path, and
+  success code.
+- Apache is running with `systemctl status httpd`.
+- User data completed successfully in `/var/log/cloud-init-output.log`.
+- The application listens on the target port and returns a successful response.
+- Network ACLs and route tables allow traffic between the ALB nodes and targets.
+
+If the ALB cannot be reached, verify that it is internet-facing, spans public
+subnets whose route tables lead to an internet gateway, and allows the listener
+port in its security group. DNS provisioning can also take a short time after
+creation.
+
+## Security and Cost Guidance
+
+- Terminate TLS on an HTTPS listener with an AWS Certificate Manager
+  certificate for real applications, and redirect HTTP to HTTPS when suitable.
+- Allow the target port only from the load balancer security group.
+- Place application instances in private subnets when they do not require
+  direct inbound internet access.
+- Attach an IAM role to instances instead of storing access keys in user data or
+  an AMI.
+- Protect public applications with appropriate authentication, logging, and
+  AWS WAF controls where required.
+- Review access logs and CloudWatch metrics, and configure alarms for unhealthy
+  targets and unexpected capacity changes.
+- Load balancers, EC2 instances, public IPv4 addresses, NAT gateways, and data
+  processing can incur charges. Consult current AWS pricing before the lab.
+- Set conservative minimum and maximum ASG capacity so a faulty policy cannot
+  grow without a limit.
+
+## Cleanup
+
+Delete lab resources after verification to prevent ongoing charges:
+
+1. Set the ASG desired and minimum capacity to `0` if you want to observe a
+   controlled scale-in, then delete the ASG.
+2. Delete the load balancer.
+3. Delete the target group after the load balancer no longer references it.
+4. Delete the launch template and any manually created EC2 instances.
+5. Delete lab security groups after their network interfaces and references are
+   gone.
+6. Review CloudWatch alarms, snapshots, public IPv4 addresses, NAT gateways,
+   and other resources created for the exercise.
+7. Confirm in the EC2 console and billing dashboard that no unintended
+   resources remain.
+
+---
+
+## Quick Revision
 
 ```text
 Scalability
@@ -752,7 +837,7 @@ Elasticity
 
 ELB
     |
-    +--> Distributes incoming traffic
+    +--> Elastic Load Balancing distributes incoming traffic
 
 ALB
     |
@@ -793,3 +878,28 @@ ASG = Manage the number of servers
 
 When used together, ELB and ASG provide a foundation for building
 scalable, elastic, and highly available EC2-based applications.
+
+## Knowledge Check
+
+1. How do scalability, elasticity, and high availability differ?
+2. When would you choose an ALB instead of an NLB?
+3. What roles do a listener, listener rule, target group, and health check play?
+4. Why should the EC2 security group accept HTTP from the ALB security group
+   instead of from `0.0.0.0/0`?
+5. What happens when desired capacity is below the ASG minimum or above its
+   maximum?
+6. Why might an instance pass an EC2 health check but fail an ELB health check?
+7. Which scaling policy would you start with to maintain a target average CPU
+   utilization?
+8. Which resources can continue generating charges after the instances are
+   terminated?
+
+## References
+
+- [What is Elastic Load Balancing? — AWS Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html)
+- [Get started with an Application Load Balancer — AWS Documentation](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/getting-started.html)
+- [What is Amazon EC2 Auto Scaling? — AWS Documentation](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html)
+- [Target tracking scaling policies — AWS Documentation](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html)
+
+> AWS features, console labels, quotas, supported protocols, and pricing can
+> change. Verify production designs against the current AWS documentation.

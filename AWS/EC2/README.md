@@ -279,4 +279,4 @@ Discounts and terms change, so check the current AWS pricing pages and use the A
 
 - Study [Amazon Machine Images (AMI)](./AMI/README.md) in depth, including custom images and EC2 Image Builder.
 - Learn how to combine [Elastic Load Balancing and Auto Scaling Groups](./Load%20Balancer/README.md) for scalable, highly available EC2 applications.
-- Return to the [AWS learning path](../README.md) and continue with VPC networking, load balancing, Auto Scaling, and monitoring.
+- Return to the [AWS learning path](../README.md) and continue with VPC networking, monitoring, and infrastructure as code.
