@@ -12,8 +12,10 @@ This section contains practical AWS learning notes, examples, and security guida
 - [x] [Storage](./Storage/README.md): storage fundamentals and service-specific guides
   - [x] [Amazon Elastic Block Store (EBS)](./Storage/EBS/README.md): volumes, attachment, mounting, resizing, snapshots, encryption, and lifecycle management
   - [x] [Amazon Simple Storage Service (S3)](./Storage/S3/README.md): buckets, objects, permissions, versioning, replication, storage classes, lifecycle rules, encryption, and monitoring
+- [x] [Databases](./Database/README.md): managed database selection, networking, availability, scaling, backup, monitoring, security, and operations
+  - [x] [Amazon Relational Database Service (RDS)](./Database/RDS/README.md): relational engines, Aurora, Multi-AZ, Read Replicas, backups, security, scaling, and an EC2-to-RDS MySQL lab
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
-- [ ] Databases: RDS, Aurora, and DynamoDB fundamentals
+- [ ] DynamoDB and purpose-built database fundamentals
 - [ ] Monitoring and auditing: CloudWatch and CloudTrail
 - [ ] Infrastructure as code: CloudFormation or Terraform
 - [ ] Cost management: budgets, alerts, and the AWS Pricing Calculator
@@ -24,7 +26,7 @@ This section contains practical AWS learning notes, examples, and security guida
 2. Understand Regions, Availability Zones, and the shared responsibility model.
 3. Build a small EC2 and VPC lab.
 4. Attach and manage an EBS volume, then practice snapshot recovery.
-5. Add S3, a managed database, monitoring, and cost controls.
+5. Add S3, RDS, monitoring, and cost controls.
 6. Rebuild the lab with infrastructure as code.
 
 ## Study rule

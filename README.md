@@ -16,6 +16,8 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
   - [AWS Storage](./AWS/Storage/README.md) — storage guides covering selection, configuration, backup, security, and operations.
     - [Amazon Elastic Block Store (EBS)](./AWS/Storage/EBS/README.md) — persistent EC2 block storage, volume management, snapshots, encryption, and lifecycle automation.
     - [Amazon Simple Storage Service (S3)](./AWS/Storage/S3/README.md) — object storage, permissions, versioning, replication, storage classes, lifecycle automation, encryption, and monitoring.
+  - [AWS Databases](./AWS/Database/README.md) — managed database selection, networking, availability, scaling, backup, monitoring, security, and operations.
+    - [Amazon Relational Database Service (RDS)](./AWS/Database/RDS/README.md) — relational engines, Aurora, Multi-AZ deployments, Read Replicas, backups, monitoring, security, and an EC2-to-RDS MySQL lab.
 
 ### Amazon Linux 2023
 
@@ -40,6 +42,8 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
 ```text
 Knowledge-Base/
 ├── AWS/
+│   ├── Database/
+│   │   └── RDS/
 │   ├── EC2/
 │   │   ├── AMI/
 │   │   └── Load Balancer/
