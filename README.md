@@ -10,9 +10,11 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
 
 - [AWS learning path](./AWS/README.md) — an ordered roadmap for learning core AWS services and operational practices.
   - [Identity and Access Management (IAM)](./AWS/IAM/README.md) — identities, roles, policies, MFA, credentials, and least privilege.
+  - [Amazon Virtual Private Cloud (VPC)](./AWS/VPC/README.md) — CIDR planning, subnets, routing, internet and NAT gateways, endpoints, network security, hybrid connectivity, and troubleshooting.
   - [Elastic Compute Cloud (EC2)](./AWS/EC2/README.md) — instances, AMIs, instance types, EBS, networking, security groups, access methods, pricing, and an Apache lab.
     - [Amazon Machine Images (AMI)](./AWS/EC2/AMI/README.md) — reusable EC2 images, custom image creation, EBS snapshots, launch templates, golden images, and EC2 Image Builder.
     - [Elastic Load Balancing and Auto Scaling Groups](./AWS/EC2/Load%20Balancer/README.md) — scalable and highly available EC2 architectures, load balancer types, target groups, health checks, and scaling policies.
+  - [Amazon Elastic Container Service (ECS)](./AWS/ECS/README.md) — container orchestration with clusters, task definitions, services, Fargate, IAM roles, networking, deployment, scaling, and monitoring.
   - [AWS Storage](./AWS/Storage/README.md) — storage guides covering selection, configuration, backup, security, and operations.
     - [Amazon Elastic Block Store (EBS)](./AWS/Storage/EBS/README.md) — persistent EC2 block storage, volume management, snapshots, encryption, and lifecycle automation.
     - [Amazon Simple Storage Service (S3)](./AWS/Storage/S3/README.md) — object storage, permissions, versioning, replication, storage classes, lifecycle automation, encryption, and monitoring.
@@ -50,11 +52,13 @@ Knowledge-Base/
 │   ├── EC2/
 │   │   ├── AMI/
 │   │   └── Load Balancer/
+│   ├── ECS/
 │   ├── IAM/
 │   ├── Lambda/
-│   └── Storage/
-│       ├── EBS/
-│       └── S3/
+│   ├── Storage/
+│   │   ├── EBS/
+│   │   └── S3/
+│   └── VPC/
 ├── Amazon Linux 2023/
 │   └── MySQL/
 ├── Docker/

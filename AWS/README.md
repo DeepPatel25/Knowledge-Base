@@ -6,9 +6,11 @@ This section contains practical AWS learning notes, examples, and security guida
 
 - [x] [Identity and Access Management (IAM)](./IAM/README.md)
 - [ ] AWS global infrastructure: Regions, Availability Zones, and edge locations
+- [x] [Virtual Private Cloud (VPC)](./VPC/README.md): CIDR planning, subnets, routing, gateways, endpoints, security controls, hybrid connectivity, troubleshooting, and cost guidance
 - [x] [Elastic Compute Cloud (EC2)](./EC2/README.md): instances, AMIs, key pairs, security groups, storage, and pricing
   - [x] [Amazon Machine Images (AMI)](./EC2/AMI/README.md): image creation, EBS snapshots, launch templates, golden images, Image Builder, security, and cleanup
   - [x] [Elastic Load Balancing and Auto Scaling Groups](./EC2/Load%20Balancer/README.md): scalability, high availability, load balancer types, target groups, scaling policies, and hands-on setup
+- [x] [Amazon Elastic Container Service (ECS)](./ECS/README.md): clusters, task definitions, services, Fargate and EC2 capacity, IAM roles, networking, deployments, scaling, observability, and security
 - [x] [Storage](./Storage/README.md): storage fundamentals and service-specific guides
   - [x] [Amazon Elastic Block Store (EBS)](./Storage/EBS/README.md): volumes, attachment, mounting, resizing, snapshots, encryption, and lifecycle management
   - [x] [Amazon Simple Storage Service (S3)](./Storage/S3/README.md): buckets, objects, permissions, versioning, replication, storage classes, lifecycle rules, encryption, and monitoring
@@ -16,7 +18,6 @@ This section contains practical AWS learning notes, examples, and security guida
   - [x] [Amazon Relational Database Service (RDS)](./Database/RDS/README.md): relational engines, Aurora, Multi-AZ, Read Replicas, backups, security, scaling, and an EC2-to-RDS MySQL lab
   - [x] [Amazon DynamoDB](./Database/DynamoDB/README.md): NoSQL modeling, keys, indexes, capacity modes, consistency, IAM access, backups, DAX, Global Tables, and monitoring
 - [x] [AWS Lambda](./Lambda/README.md): serverless functions, invocation models, event sources, concurrency, IAM permissions, reliability, observability, security, and cost controls
-- [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
 - [ ] Additional purpose-built database fundamentals
 - [ ] Monitoring and auditing: CloudWatch and CloudTrail
 - [ ] Infrastructure as code: CloudFormation or Terraform
@@ -26,11 +27,12 @@ This section contains practical AWS learning notes, examples, and security guida
 
 1. Learn IAM and secure the AWS account.
 2. Understand Regions, Availability Zones, and the shared responsibility model.
-3. Build a small EC2 and VPC lab.
+3. Build a small VPC and EC2 lab.
 4. Attach and manage an EBS volume, then practice snapshot recovery.
 5. Add S3, RDS, DynamoDB, monitoring, and cost controls.
-6. Build an event-driven Lambda workflow with least-privilege permissions.
-7. Rebuild the lab with infrastructure as code.
+6. Deploy a container to ECS using Fargate and least-privilege task roles.
+7. Build an event-driven Lambda workflow with least-privilege permissions.
+8. Rebuild the lab with infrastructure as code.
 
 ## Study rule
 
