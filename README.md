@@ -19,6 +19,7 @@ The guides favor secure defaults, reproducible commands, verification steps, tro
   - [AWS Databases](./AWS/Database/README.md) — managed database selection, networking, availability, scaling, backup, monitoring, security, and operations.
     - [Amazon Relational Database Service (RDS)](./AWS/Database/RDS/README.md) — relational engines, Aurora, Multi-AZ deployments, Read Replicas, backups, monitoring, security, and an EC2-to-RDS MySQL lab.
     - [Amazon DynamoDB](./AWS/Database/DynamoDB/README.md) — NoSQL data modeling, primary keys, indexes, capacity modes, consistency, IAM integration, backups, DAX, Global Tables, and monitoring.
+  - [AWS Lambda](./AWS/Lambda/README.md) — serverless functions, event-driven invocation, concurrency, IAM permissions, reliability, monitoring, security, and cost-aware operation.
 
 ### Amazon Linux 2023
 
@@ -50,6 +51,7 @@ Knowledge-Base/
 │   │   ├── AMI/
 │   │   └── Load Balancer/
 │   ├── IAM/
+│   ├── Lambda/
 │   └── Storage/
 │       ├── EBS/
 │       └── S3/

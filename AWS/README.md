@@ -15,6 +15,7 @@ This section contains practical AWS learning notes, examples, and security guida
 - [x] [Databases](./Database/README.md): managed database selection, networking, availability, scaling, backup, monitoring, security, and operations
   - [x] [Amazon Relational Database Service (RDS)](./Database/RDS/README.md): relational engines, Aurora, Multi-AZ, Read Replicas, backups, security, scaling, and an EC2-to-RDS MySQL lab
   - [x] [Amazon DynamoDB](./Database/DynamoDB/README.md): NoSQL modeling, keys, indexes, capacity modes, consistency, IAM access, backups, DAX, Global Tables, and monitoring
+- [x] [AWS Lambda](./Lambda/README.md): serverless functions, invocation models, event sources, concurrency, IAM permissions, reliability, observability, security, and cost controls
 - [ ] VPC: subnets, route tables, internet gateways, NAT, and network ACLs
 - [ ] Additional purpose-built database fundamentals
 - [ ] Monitoring and auditing: CloudWatch and CloudTrail
@@ -28,7 +29,8 @@ This section contains practical AWS learning notes, examples, and security guida
 3. Build a small EC2 and VPC lab.
 4. Attach and manage an EBS volume, then practice snapshot recovery.
 5. Add S3, RDS, DynamoDB, monitoring, and cost controls.
-6. Rebuild the lab with infrastructure as code.
+6. Build an event-driven Lambda workflow with least-privilege permissions.
+7. Rebuild the lab with infrastructure as code.
 
 ## Study rule
 
