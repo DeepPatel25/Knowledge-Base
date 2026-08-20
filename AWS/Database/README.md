@@ -34,13 +34,15 @@ services are learning-path directions rather than completed guides.
 
 ## Recommended order
 
-1. Learn relational database fundamentals and the AWS shared-responsibility model.
+1. Learn relational database fundamentals and the AWS shared-responsibility
+   model.
 2. Review VPC subnet placement, routing, security groups, and DNS resolution.
 3. Complete the RDS guide with a private database in a sandbox VPC.
 4. Practice snapshots and point-in-time recovery before relying on backups.
 5. Compare Multi-AZ availability with Read Replica scaling.
 6. Complete the DynamoDB guide and model a table from known access patterns.
-7. Compare DynamoDB on-demand and provisioned capacity and test point-in-time recovery.
+7. Compare DynamoDB on-demand and provisioned capacity and test point-in-time
+   recovery.
 8. Add monitoring, encryption, credential rotation, and cost controls.
 9. Evaluate other purpose-built databases for specialized workloads.
 
@@ -48,7 +50,8 @@ services are learning-path directions rather than completed guides.
 
 Keep databases private unless public connectivity is explicitly required and
 reviewed. Never commit database passwords, connection strings, or AWS access
-keys. Before deleting a database, confirm its account, Region, identifier, backup retention, replica
-relationships, deletion protection, and final-snapshot requirements. Before
-deleting a DynamoDB table, confirm its keys, replicas, backups, recovery
-settings, downstream stream consumers, and retention requirements.
+keys. Before deleting a database, confirm its account, Region, identifier,
+backup retention, replica relationships, deletion protection, and final-snapshot
+requirements. Before deleting a DynamoDB table, confirm its keys, replicas,
+backups, recovery settings, downstream stream consumers, and retention
+requirements.
